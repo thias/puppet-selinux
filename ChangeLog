@@ -2,6 +2,7 @@
 * Update README and use markdown.
 * Change to 2-space indent.
 * Remove the clean up of the very very old file names this module used to use.
+* Remove automatic support for message files provided inside this module.
 
 2012-12-18 - 0.1.1
 * Add policycoreutils-restorecond package for recent Fedora versions.

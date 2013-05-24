@@ -7,15 +7,9 @@
 # never conflict with modules from the currently loaded policy.
 # You can get a list of existing loaded modules with : semodule -l
 #
-# Sample Usage :
-#     selinux::audit2allow { 'mydaemon': }
-#     selinux::audit2allow { 'myotherdaemon':
-#       source => "puppet:///files/${::fqdn}/selinux-messages",
-#     }
-#
 define selinux::audit2allow (
-  $source  = false,
-  $content = false 
+  $content = undef,
+  $source  = undef
 ) {
 
   include selinux
@@ -24,20 +18,9 @@ define selinux::audit2allow (
   realize File['/etc/selinux/local']
   file { "/etc/selinux/local/${title}": ensure => directory }
 
-  # The deny messages we want to allow
-  if $content {
-    $messages_content = $content
-    $messages_source  = undef
-  } else {
-    $messages_content = undef
-    $messages_source  = $source ? {
-      false   => "puppet:///modules/${module_name}/messages.${title}",
-      default => $source,
-    }
-  }
   file { "/etc/selinux/local/${title}/messages":
-    content => $messages_content,
-    source  => $messages_source,
+    content => $content,
+    source  => $source,
     # The refresh requires this, but put it here since otherwise the
     # refresh can get skipped then never run again.
     require => Package['audit2allow'],
