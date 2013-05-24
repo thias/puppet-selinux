@@ -10,52 +10,52 @@
 # Sample Usage :
 #     selinux::audit2allow { 'mydaemon': }
 #     selinux::audit2allow { 'myotherdaemon':
-#         source => "puppet:///files/${::fqdn}/selinux-messages",
+#       source => "puppet:///files/${::fqdn}/selinux-messages",
 #     }
 #
 define selinux::audit2allow (
-    $source  = false,
-    $content = false 
+  $source  = false,
+  $content = false 
 ) {
 
-    include selinux
+  include selinux
 
-    # Parent directory and directory
-    realize File['/etc/selinux/local']
-    file { "/etc/selinux/local/${title}": ensure => directory }
+  # Parent directory and directory
+  realize File['/etc/selinux/local']
+  file { "/etc/selinux/local/${title}": ensure => directory }
 
-    # The deny messages we want to allow
-    if $content {
-        $messages_content = $content
-        $messages_source  = undef
-    } else {
-        $messages_content = undef
-        $messages_source  = $source ? {
-            false   => "puppet:///modules/${module_name}/messages.${title}",
-            default => $source,
-        }
+  # The deny messages we want to allow
+  if $content {
+    $messages_content = $content
+    $messages_source  = undef
+  } else {
+    $messages_content = undef
+    $messages_source  = $source ? {
+      false   => "puppet:///modules/${module_name}/messages.${title}",
+      default => $source,
     }
-    file { "/etc/selinux/local/${title}/messages":
-        content => $messages_content,
-        source  => $messages_source,
-        # The refresh requires this, but put it here since otherwise the
-        # refresh can get skipped then never run again.
-        require => Package['audit2allow'],
-    }
+  }
+  file { "/etc/selinux/local/${title}/messages":
+    content => $messages_content,
+    source  => $messages_source,
+    # The refresh requires this, but put it here since otherwise the
+    # refresh can get skipped then never run again.
+    require => Package['audit2allow'],
+  }
 
-    # Reload the changes automatically
-    exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-        path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-        cwd         => "/etc/selinux/local/${title}",
-        subscribe   => File["/etc/selinux/local/${title}/messages"],
-        refreshonly => true,
-    }
+  # Reload the changes automatically
+  exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
+    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    cwd         => "/etc/selinux/local/${title}",
+    subscribe   => File["/etc/selinux/local/${title}/messages"],
+    refreshonly => true,
+  }
 
-    # Clean up the old naming, without the "local" prefix
-    file { [ "/etc/selinux/local/${title}/${title}.pp",
-             "/etc/selinux/local/${title}/${title}.te" ]:
-        ensure => absent,
-    }
+  # Clean up the old naming, without the "local" prefix
+  file { [ "/etc/selinux/local/${title}/${title}.pp",
+           "/etc/selinux/local/${title}/${title}.te" ]:
+    ensure => absent,
+  }
 
 }
 

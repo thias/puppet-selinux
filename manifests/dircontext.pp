@@ -25,7 +25,7 @@
 # the following rule:
 #
 #     selinux::dircontext { '/dir':
-#         seltype => 'httpd_sys_content_t',
+#       seltype => 'httpd_sys_content_t',
 #     }
 #
 # This will run the 'semanage' and 'restorecon' tools to apply the specified
@@ -38,27 +38,27 @@
 # the web server can access files of this type as well.  See policy.pp.
 #
 define selinux::dircontext (
-    $object = $title,
-    $seltype
+  $object = $title,
+  $seltype
 ) {
 
-    # Run semanage to persistently set the SELinux Type.
-    # Note that changes made by semanage do not take effect
-    # until an explicit relabel is performed.
-    exec { "semanage_fcontext_${seltype}_${object}":
-        command => "semanage fcontext -a -t ${seltype} '${object}(/.*)?'",
-        path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-        unless  => "semanage fcontext -l -C -n | grep ^${object}",
-        require => Package['policycoreutils'],
-        notify  => Exec["restorecon_${seltype}_${object}"],
-    }
+  # Run semanage to persistently set the SELinux Type.
+  # Note that changes made by semanage do not take effect
+  # until an explicit relabel is performed.
+  exec { "semanage_fcontext_${seltype}_${object}":
+    command => "semanage fcontext -a -t ${seltype} '${object}(/.*)?'",
+    path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    unless  => "semanage fcontext -l -C -n | grep ^${object}",
+    require => Package['policycoreutils'],
+    notify  => Exec["restorecon_${seltype}_${object}"],
+  }
 
-    # Run restorecon to immediately set the SELinux Type.
-    exec { "restorecon_${seltype}_${object}":
-        command     => "restorecon -R ${object}",
-        path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-        refreshonly => true,
-    }
+  # Run restorecon to immediately set the SELinux Type.
+  exec { "restorecon_${seltype}_${object}":
+    command     => "restorecon -R ${object}",
+    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    refreshonly => true,
+  }
 
 }
 
