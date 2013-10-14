@@ -19,6 +19,9 @@ define selinux::audit2allow (
   file { "/etc/selinux/local/${title}": ensure => directory }
 
   file { "/etc/selinux/local/${title}/messages":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     content => $content,
     source  => $source,
     # The refresh requires this, but put it here since otherwise the
