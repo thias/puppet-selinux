@@ -16,7 +16,12 @@ define selinux::audit2allow (
 
   # Parent directory and directory
   realize File['/etc/selinux/local']
-  file { "/etc/selinux/local/${title}": ensure => directory }
+  file { "/etc/selinux/local/${title}":
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
 
   file { "/etc/selinux/local/${title}/messages":
     owner   => 'root',
