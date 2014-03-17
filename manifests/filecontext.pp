@@ -1,4 +1,4 @@
-# define: selinux::dircontext
+# define: selinux::filecontext
 #
 # Change SELinux file security context.
 #
@@ -37,14 +37,38 @@
 # prefer to instead create a new policy for httpd and install it, so that
 # the web server can access files of this type as well.  See policy.pp.
 #
-define selinux::dircontext (
+define selinux::filecontext (
   $object = $title,
-  $seltype
+  $seltype,
+  $recurse = false,
 ) {
 
-  selinux::filecontext { $title:
-    seltype => $seltype,
-    recurse => true,
+  $target = $recurse ? {
+    true  => "${object}(/.*)?",
+    false => $object,
+  }
+  $restore_options = $recurse ? {
+    true  => '-R ',
+    false => '',
+  }
+
+  # Run semanage to persistently set the SELinux Type.
+  # Note that changes made by semanage do not take effect
+  # until an explicit relabel is performed.
+  exec { "semanage_fcontext_${seltype}_${object}":
+    command => "semanage fcontext -a -t ${seltype} '${target}'",
+    path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    unless  => "semanage fcontext -l -C -n | grep ^${object}",
+    require => Package['policycoreutils'],
+    notify  => Exec["restorecon_${seltype}_${object}"],
+  }
+
+  # Run restorecon to immediately set the SELinux Type.
+  exec { "restorecon_${seltype}_${object}":
+    command     => "restorecon ${restore_options}${object}",
+    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    refreshonly => true,
   }
 
 }
+
