@@ -68,7 +68,7 @@ define selinux::filecontext (
     command     => "restorecon ${restore_options}${object}",
     path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
     refreshonly => true,
+    onlyif      => "test -d ${object}",
   }
 
 }
-
