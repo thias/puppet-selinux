@@ -14,25 +14,27 @@ define selinux::audit2allow (
 
   include selinux
 
-  # Parent directory and directory
-  realize File['/etc/selinux/local']
-  file { "/etc/selinux/local/${title}": ensure => directory }
+  if $::selinux and $::selinux_enforced {
 
-  file { "/etc/selinux/local/${title}/messages":
-    content => $content,
-    source  => $source,
-    # The refresh requires this, but put it here since otherwise the
-    # refresh can get skipped then never run again.
-    require => Package['audit2allow'],
+    # Parent directory and directory
+    realize File['/etc/selinux/local']
+    file { "/etc/selinux/local/${title}": ensure => directory }
+  
+    file { "/etc/selinux/local/${title}/messages":
+      content => $content,
+      source  => $source,
+      # The refresh requires this, but put it here since otherwise the
+      # refresh can get skipped then never run again.
+      require => Package['audit2allow'],
+    }
+  
+    # Reload the changes automatically
+    exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
+      path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+      cwd         => "/etc/selinux/local/${title}",
+      subscribe   => File["/etc/selinux/local/${title}/messages"],
+      refreshonly => true,
+    }
   }
-
-  # Reload the changes automatically
-  exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    cwd         => "/etc/selinux/local/${title}",
-    subscribe   => File["/etc/selinux/local/${title}/messages"],
-    refreshonly => true,
-  }
-
 }
 
