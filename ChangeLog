@@ -1,3 +1,7 @@
+2014-01-16 - 0.1.3
+* Set owner, group and mode for the local audit2allow files.
+* Fix audit2allow directory ownership.
+
 2013-05-24 - 0.1.2
 * Add new dircontext definition, still a work in progress (Greg Anderson).
 * Update README and use markdown.
