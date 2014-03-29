@@ -15,4 +15,12 @@ describe "selinux::filecontext" do
       with_command("restorecon /www")
     }
   end
+  context "when selinux is not enforcing", :compile do
+    let(:facts) {{
+      :selinux => true,
+      :selinux_enforced => false
+    }}
+    it { should_not contain_exec("semanage_fcontext_httpd_sys_content_t_/www") }
+    it { should_not contain_exec("restorecon_httpd_sys_content_t_/www") }
+  end
 end
