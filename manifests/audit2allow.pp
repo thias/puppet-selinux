@@ -34,5 +34,13 @@ define selinux::audit2allow (
       # refresh can get skipped then never run again.
       require => Package['audit2allow'],
     }
+
+    # Reload the changes automatically
+    exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
+      path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+      cwd         => "/etc/selinux/local/${title}",
+      subscribe   => File["/etc/selinux/local/${title}/messages"],
+      refreshonly => true,
+    }
   }
 }
