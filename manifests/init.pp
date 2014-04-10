@@ -3,7 +3,7 @@
 #
 class selinux {
 
-  if $::selinux and $::selinux_enforced {
+  if $::selinux {
     # The audit2allow tool was split out in -python at some point
     $audit2allow = "${::operatingsystem}-${::operatingsystemrelease}" ? {
       'Fedora-10' => 'policycoreutils',

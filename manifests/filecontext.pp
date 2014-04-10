@@ -43,7 +43,7 @@ define selinux::filecontext (
   $recurse = false,
 ) {
 
-  if $::selinux and $::selinux_enforced {
+  if $::selinux {
 
     $target = $recurse ? {
       true  => "${object}(/.*)?",
