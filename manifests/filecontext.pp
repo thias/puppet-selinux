@@ -53,6 +53,10 @@ define selinux::filecontext (
       true  => '-R ',
       false => '',
     }
+    $onlyif_options = $recurse ? {
+      true  => '-d',
+      false => '-e',
+    }
 
     # Run semanage to persistently set the SELinux Type.
     # Note that changes made by semanage do not take effect
@@ -70,7 +74,7 @@ define selinux::filecontext (
       command     => "restorecon ${restore_options}${object}",
       path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
       refreshonly => true,
-      onlyif      => "test -d ${object}",
+      onlyif      => "test ${onlyif_options} ${object}",
     }
 
   }
