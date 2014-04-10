@@ -13,11 +13,13 @@
 #
 #     $ ls -Zd /var/www/html
 #     drwxr-xr-x. root root system_u:object_r:httpd_sys_content_t:s0 /var/www/html
+#
 # To see all existing file paths with contexts set:
+#
 #     # semanage fcontext -l
 #     SELinux fcontext       type               Context
-#     /                      directory          system_u:object_r:root_t:s0 
-#     /.*                    all files          system_u:object_r:default_t:s0 
+#     /                      directory          system_u:object_r:root_t:s0
+#     /.*                    all files          system_u:object_r:default_t:s0
 #     [...]
 #
 # To allow httpd to access the /dir directory and everyting it contains,
@@ -35,7 +37,13 @@
 # If the directory in question already has a unique type that you do not
 # want to change, because it is needed for some other policy, you might
 # prefer to instead create a new policy for httpd and install it, so that
-# the web server can access files of this type as well.  See policy.pp.
+# the web server can access files of this type as well.  See audit2allow.pp.
+#
+# To set the context for just a file, without recursing, use selinux::filecontext
+#
+#     selinux::filecontext { '/var/home_dir':
+#       seltype => 'user_home_dir_t',
+#     }
 #
 define selinux::filecontext (
   $object = $title,

@@ -1,5 +1,5 @@
-# Main SELinux class to be included on all nodes. If SELinux isn't enabled in
-# enforcing mode, then it does nothing anyway.
+# Main SELinux class to be included on all nodes. If SELinux isn't enabled
+# it does nothing anyway.
 #
 class selinux {
 
