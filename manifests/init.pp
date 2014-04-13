@@ -1,23 +1,20 @@
 # Main SELinux class to be included on all nodes. If SELinux isn't enabled
 # it does nothing anyway.
 #
-class selinux {
+class selinux inherits ::selinux::params {
 
   if $::selinux {
-    # The audit2allow tool was split out in -python at some point
-    $audit2allow = "${::operatingsystem}-${::operatingsystemrelease}" ? {
-      'Fedora-10' => 'policycoreutils',
-       default    => 'policycoreutils-python',
-    }
-    # The restorecond tool was split out in -restorecond at some point
-    if $::operatingsystem == 'Fedora' and $::operatingsystemrelease > 16 {
-      package { 'policycoreutils-restorecond': ensure => installed }
-    }
-    package { 'libselinux-ruby': ensure => installed }
-    package { $audit2allow:
+    package { $package_audit2allow:
       alias  => 'audit2allow',
       ensure => installed,
     }
+    if $package_restorecond {
+      package { $package_restorecond:
+        ensure => installed,
+        before => Service['restorecond'],
+      }
+    }
+    package { 'libselinux-ruby': ensure => installed }
     service { 'restorecond':
       enable    => true,
       ensure    => running,
