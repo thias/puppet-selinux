@@ -4,6 +4,7 @@ class selinux::params {
 
   case $::operatingsystem {
     'Fedora': {
+      $restorecond = true
       if $::operatingsystemrelease >= 11 {
         $package_audit2allow = 'policycoreutils-python'
       } else {
@@ -16,11 +17,18 @@ class selinux::params {
       }
     }
     'RedHat','CentOS','Scientific': {
-      $package_audit2allow = 'policycoreutils-python'
       if $::operatingsystemrelease >= 7 {
+        $package_audit2allow = 'policycoreutils-python'
+        $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
-      } else {
+      } elsif $::operatingsystemrelease >= 5 {
+        $package_audit2allow = 'policycoreutils-python'
+        $restorecond = true
         $package_restorecond = false
+      } else {
+        # Very old...
+        $package_audit2allow = 'policycoreutils'
+        $restorecond = false
       }
     }
   }

@@ -1,6 +1,7 @@
 * Apply changes also in Permissive mode.
 * Add filecontext definition (#2, @carlossg).
 * Add support for RHEL 7 (policycoreutils-restorecond package split).
+* Add support for RHEL 4.
 
 2014-01-16 - 0.1.3
 * Set owner, group and mode for the local audit2allow files.

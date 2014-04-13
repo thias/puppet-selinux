@@ -8,18 +8,20 @@ class selinux inherits ::selinux::params {
       alias  => 'audit2allow',
       ensure => installed,
     }
-    if $package_restorecond {
-      package { $package_restorecond:
-        ensure => installed,
-        before => Service['restorecond'],
+    if $restorecond {
+      if $package_restorecond {
+        package { $package_restorecond:
+          ensure => installed,
+          before => Service['restorecond'],
+        }
+      }
+      service { 'restorecond':
+        enable    => true,
+        ensure    => running,
+        hasstatus => true,
       }
     }
     package { 'libselinux-ruby': ensure => installed }
-    service { 'restorecond':
-      enable    => true,
-      ensure    => running,
-      hasstatus => true,
-    }
     # The parent directory used from selinux::audit2allow
     @file { '/etc/selinux/local': ensure => directory }
   }
