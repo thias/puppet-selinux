@@ -2,6 +2,7 @@
 * Add filecontext definition (#2, @carlossg).
 * Add support for RHEL 7 (policycoreutils-restorecond package split).
 * Add support for RHEL 4.
+* Remove libselinux-ruby package, all recent puppet rpms pull it in.
 
 2014-01-16 - 0.1.3
 * Set owner, group and mode for the local audit2allow files.

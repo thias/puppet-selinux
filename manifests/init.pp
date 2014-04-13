@@ -21,7 +21,6 @@ class selinux inherits ::selinux::params {
         hasstatus => true,
       }
     }
-    package { 'libselinux-ruby': ensure => installed }
     # The parent directory used from selinux::audit2allow
     @file { '/etc/selinux/local': ensure => directory }
   }
