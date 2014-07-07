@@ -14,33 +14,33 @@ define selinux::audit2allow (
 
   include selinux
 
-  # Parent directory and directory
-  realize File['/etc/selinux/local']
-  file { "/etc/selinux/local/${title}":
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
+  if $::selinux and $::selinux_enforced {
+    # Parent directory and directory
+    realize File['/etc/selinux/local']
+    file { "/etc/selinux/local/${title}":
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
 
-  file { "/etc/selinux/local/${title}/messages":
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => $content,
-    source  => $source,
-    # The refresh requires this, but put it here since otherwise the
-    # refresh can get skipped then never run again.
-    require => Package['audit2allow'],
-  }
+    file { "/etc/selinux/local/${title}/messages":
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => $content,
+      source  => $source,
+      # The refresh requires this, but put it here since otherwise the
+      # refresh can get skipped then never run again.
+      require => Package['audit2allow'],
+    }
 
-  # Reload the changes automatically
-  exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    cwd         => "/etc/selinux/local/${title}",
-    subscribe   => File["/etc/selinux/local/${title}/messages"],
-    refreshonly => true,
+    # Reload the changes automatically
+    exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
+      path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+      cwd         => "/etc/selinux/local/${title}",
+      subscribe   => File["/etc/selinux/local/${title}/messages"],
+      refreshonly => true,
+    }
   }
-
 }
-
