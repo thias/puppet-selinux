@@ -1,4 +1,5 @@
 * Make sure audit2allow's exec is tried again if part of it fails.
+* Work around audit2allow issue on RHEL7, previous module need to be unloaded.
 
 2014-04-28 - 0.2.0
 * Apply changes also in Permissive mode.

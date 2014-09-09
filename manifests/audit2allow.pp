@@ -34,9 +34,16 @@ define selinux::audit2allow (
     require => Package['audit2allow'],
   }
 
+  # Work around issue where .te file is corrupt on RHEL7 when "upgrading"
+  if $::selinux::params::rmmod {
+    $rmmod = "semodule -r local${title}; "
+  } else {
+    $rmmod = ""
+  }
+
   # Reload the changes automatically
   exec { "audit2allow local${title}":
-    command     => "rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp",
+    command     => "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp",
     path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
     cwd         => "/etc/selinux/local/${title}",
     subscribe   => File["/etc/selinux/local/${title}/messages"],
