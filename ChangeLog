@@ -1,3 +1,5 @@
+* Make sure audit2allow's exec is tried again if part of it fails.
+
 2014-04-28 - 0.2.0
 * Apply changes also in Permissive mode.
 * Add filecontext definition (#2, @carlossg).

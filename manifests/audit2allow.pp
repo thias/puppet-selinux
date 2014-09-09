@@ -35,11 +35,12 @@ define selinux::audit2allow (
   }
 
   # Reload the changes automatically
-  exec { "audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
+  exec { "audit2allow local${title}":
+    command     => "rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp",
     path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
     cwd         => "/etc/selinux/local/${title}",
     subscribe   => File["/etc/selinux/local/${title}/messages"],
-    refreshonly => true,
+    unless      => "test -f local${title}.pp && ( semodule -l | egrep ^local${title} )",
   }
 
 }
