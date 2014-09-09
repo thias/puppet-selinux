@@ -1,5 +1,5 @@
 name 'thias-selinux'
-version '0.2.0'
+version '1.0.0'
 source 'git://github.com/thias/puppet-selinux'
 author 'Matthias Saou'
 license 'Apache 2.0'

@@ -1,3 +1,4 @@
+2014-09-09 - 1.0.0
 * Make sure audit2allow's exec is tried again if part of it fails.
 * Work around audit2allow issue on RHEL7, previous module need to be unloaded.
 
