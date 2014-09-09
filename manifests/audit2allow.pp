@@ -9,10 +9,10 @@
 #
 define selinux::audit2allow (
   $content = undef,
-  $source  = undef
+  $source  = undef,
 ) {
 
-  include selinux
+  include '::selinux'
 
   # Parent directory and directory
   realize File['/etc/selinux/local']

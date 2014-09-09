@@ -17,11 +17,11 @@ class selinux::params {
       }
     }
     'RedHat','CentOS','Scientific': {
-      if $::operatingsystemrelease >= 7 {
+      if versioncmp($::operatingsystemrelease, '7') >= 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
-      } elsif $::operatingsystemrelease >= 5 {
+      } elsif versioncmp($::operatingsystemrelease, '5') >= 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = false
