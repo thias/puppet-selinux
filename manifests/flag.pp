@@ -31,6 +31,5 @@ define selinux::flag (
   exec { "setsebool-${flag}-${value}":
     command => "/usr/sbin/setsebool -P ${flag} ${value}",
     unless  => "/usr/sbin/getsebool ${flag} | grep -q -- '--> ${expected}'",
-#    require => File["/etc/selinux/config"]
   }
 }
