@@ -1,3 +1,5 @@
+# Trivial parameters class, as many SELinux details differ over time
+#
 class selinux::params {
 
   # Some tools were split out in sub-packages over time
@@ -38,4 +40,3 @@ class selinux::params {
   }
 
 }
-

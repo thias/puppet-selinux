@@ -5,8 +5,8 @@
 # See filecontext.pp
 #
 define selinux::dircontext (
-  $object = $title,
   $seltype,
+  $object = $title,
 ) {
 
   selinux::filecontext { $title:

@@ -1,1 +1,1 @@
-include selinux
+include '::selinux'

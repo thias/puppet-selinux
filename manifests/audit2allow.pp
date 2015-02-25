@@ -38,17 +38,16 @@ define selinux::audit2allow (
   if $::selinux::params::rmmod {
     $rmmod = "semodule -r local${title}; "
   } else {
-    $rmmod = ""
+    $rmmod = ''
   }
 
   # Reload the changes automatically
   exec { "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-    path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    cwd         => "/etc/selinux/local/${title}",
-    subscribe   => File["/etc/selinux/local/${title}/messages"],
+    path      => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+    cwd       => "/etc/selinux/local/${title}",
+    subscribe => File["/etc/selinux/local/${title}/messages"],
     # Don't run if .pp generation worked + module is loaded
-    unless      => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",
+    unless    => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",
   }
 
 }
-

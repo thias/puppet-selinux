@@ -10,6 +10,8 @@ allow otherwise denied system operations, and set file and directory security co
 * `selinux::filecontext` : Manage SELinux file context.
 * `selinux::dircontext` : Manage SELinux file context recursively (directories).
 
+Note : For SELinux booleans, use the Puppet built-in `selboolean` type.
+
 
 ## selinux
 
