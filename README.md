@@ -65,6 +65,7 @@ the specified path both persistently and immediately.
 selinux::dircontext { '/data/www':
   seltype => 'httpd_sys_content_t',
 }
+```
 
 To set the context for just a file, without recursing :
 
