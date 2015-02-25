@@ -33,6 +33,7 @@ Example :
 selinux::audit2allow { 'mydaemon':
   source => "puppet:///modules/${module_name}/selinux/messages.mydaemon",
 }
+```
 
 The content of the above files is based on kernel/audit avc denial messages,
 typically found in `/var/log/audit/audit.log`.
