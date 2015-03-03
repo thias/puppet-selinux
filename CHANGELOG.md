@@ -1,3 +1,5 @@
+* Support ensure => 'absent' for audit2allow.
+
 #### 2015-02-25 - 1.0.2
 * Cosmetic fixes to make puppet-lint happy.
 * Update README to make instructions shorter and clearer.
