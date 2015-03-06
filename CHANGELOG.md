@@ -1,3 +1,4 @@
+#### 2015-03-06 - 1.0.3
 * Support ensure => 'absent' for audit2allow.
 
 #### 2015-02-25 - 1.0.2
