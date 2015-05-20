@@ -1,3 +1,4 @@
+#### 2015-05-20 - 1.0.4
 * Workaround in audit2allow package name/alias for Puppet 4 compatibility.
 
 #### 2015-03-06 - 1.0.3
