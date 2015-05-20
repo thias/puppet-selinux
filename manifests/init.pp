@@ -8,9 +8,9 @@ class selinux (
 ) inherits ::selinux::params {
 
   if $::selinux {
-    package { $package_audit2allow:
+    package { 'audit2allow':
       ensure => 'installed',
-      alias  => 'audit2allow',
+      name   => $package_audit2allow,
     }
     if $restorecond {
       if $package_restorecond {
