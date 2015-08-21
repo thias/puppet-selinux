@@ -29,7 +29,7 @@ define selinux::filecontext (
     exec { "semanage_fcontext_${seltype}_${object}":
       command => "semanage fcontext -a -t ${seltype} '${target}'",
       path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-      unless  => "semanage fcontext -l -C -n | grep ^${object}",
+      unless  => "semanage fcontext -l -C -n | grep ^${object}$",
       require => Package['audit2allow'],
       notify  => Exec["restorecon_${seltype}_${object}"],
     }
