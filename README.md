@@ -18,12 +18,6 @@ Note : For SELinux booleans, use the Puppet built-in `selboolean` type.
 Main SELinux class to be included on all nodes. If SELinux isn't available,
 it does nothing anyway.
 
-### Parameters:
-* `concat`: Boolean that concatenates every audit2allow SELinux module and creates
-a unique file ready to be compiled. This is a really useful param if you use the
-audit2allow definition in differents manifests because SELinux will compile a single
-module from a single file instead of compile every audit2allow module file.
-
 
 ## selinux::audit2allow
 
@@ -44,6 +38,10 @@ selinux::audit2allow { 'mydaemon':
 The content of the above files is based on kernel/audit avc denial messages,
 typically found in `/var/log/audit/audit.log`.
 See the included `messages.nrpe` file for an example.
+
+When using it multiple times on a single node, the `selinux::concat` parameter
+can be switched to `true` in order to create a single SELinux module instead
+of one each time it is used. This speeds up Puppet runs a lot.
 
 
 ## selinux::filecontext and selinux::dircontext
@@ -81,11 +79,13 @@ selinux::filecontext { '/srv/foo.txt':
 }
 ```
 
-To copy the context from another file, set copy to true and 'seltype' to the source file:
+To copy the context from another file, set 'copy' to `true` and 'seltype' to
+the source file or directory :
 
 ```puppet
-selinux::filecontext { '/export/home':
+selinux::dircontext { '/export/home':
   seltype => '/home',
   copy    => true,
 }
 ```
+
