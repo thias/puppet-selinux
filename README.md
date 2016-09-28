@@ -81,3 +81,11 @@ selinux::filecontext { '/srv/foo.txt':
 }
 ```
 
+To copy the context from another file, set copy to true and 'seltype' to the source file:
+
+```puppet
+selinux::filecontext { '/export/home':
+  seltype => '/home',
+  copy    => true,
+}
+```

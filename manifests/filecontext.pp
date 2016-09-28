@@ -6,6 +6,7 @@ define selinux::filecontext (
   $seltype,
   $object  = $title,
   $recurse = false,
+  $copy = false,
 ) {
 
   if $::selinux {
@@ -22,12 +23,16 @@ define selinux::filecontext (
       true  => '-d',
       false => '-e',
     }
+    $copy_options = $copy ? {
+      true  => '-e',
+      false => '-t',
+    }
 
     # Run semanage to persistently set the SELinux Type.
     # Note that changes made by semanage do not take effect
     # until an explicit relabel is performed.
     exec { "semanage_fcontext_${seltype}_${object}":
-      command => "semanage fcontext -a -t ${seltype} '${target}'",
+      command => "semanage fcontext -a ${copy_options} ${seltype} '${target}'",
       path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
       unless  => "semanage fcontext -l -C -n | grep ^${object}",
       require => Package['audit2allow'],
