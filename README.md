@@ -18,6 +18,12 @@ Note : For SELinux booleans, use the Puppet built-in `selboolean` type.
 Main SELinux class to be included on all nodes. If SELinux isn't available,
 it does nothing anyway.
 
+### Parameters:
+* `concat`: Boolean that concatenates every audit2allow SELinux module and creates
+a unique file ready to be compiled. This is a really useful param if you use the
+audit2allow definition in differents manifests because SELinux will compile a single
+module from a single file instead of compile every audit2allow module file.
+
 
 ## selinux::audit2allow
 

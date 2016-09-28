@@ -5,6 +5,7 @@ class selinux (
   $package_audit2allow = $::selinux::params::package_audit2allow,
   $restorecond         = $::selinux::params::restorecond,
   $package_restorecond = $::selinux::params::package_restorecond,
+  $concat              = false,
 ) inherits ::selinux::params {
 
   if $::selinux {
@@ -27,6 +28,11 @@ class selinux (
     }
     # The parent directory used from selinux::audit2allow
     @file { '/etc/selinux/local': ensure => 'directory' }
+    # The single module when concat is used
+    @selinux::audit2allow_single { 'audit2allow':
+      ensure => 'present',
+      concat => $concat,
+    }
   }
 
 }

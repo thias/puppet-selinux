@@ -13,58 +13,42 @@ define selinux::audit2allow (
   $source  = undef,
 ) {
 
-  if $ensure == 'absent' {
+  include '::selinux'
 
-    # Unload module if found
-    exec { "semodule -r local${title}":
-      path   => $::path,
-      onlyif => "semodule -l | egrep ^local${title}\s",
-    }
+  $concat = $::selinux::concat
 
-    # Remove our files and the ones audit2allow creates
-    file { "/etc/selinux/local/${title}":
-      ensure => 'absent',
-      force  => true,
+  if $concat == false {
+
+    selinux::audit2allow_single { $title:
+      ensure  => $ensure,
+      content => $content,
+      source  => $source,
+      concat  => false,
     }
 
   } else {
 
-    include '::selinux'
+    if $ensure != 'absent' {
 
-    # Parent directory and directory
-    realize File['/etc/selinux/local']
-    file { "/etc/selinux/local/${title}":
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-    }
+      realize Selinux::Audit2allow_single['audit2allow']
+      # concat fragment
+      concat::fragment{ "audit2allow ${title}":
+        target  => '/etc/selinux/local/audit2allow/messages',
+        content => $content,
+        source  => $source,
+      }
 
-    file { "/etc/selinux/local/${title}/messages":
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => $content,
-      source  => $source,
-      # The refresh requires this, but put it here since otherwise the
-      # refresh can get skipped then never run again.
-      require => Package['audit2allow'],
-    }
+      # For when switching to concat, remove the non-concat
+      selinux::audit2allow_single { $title:
+        ensure  => 'absent',
+        # Make sure we have changes at all times
+        require => Selinux::Audit2allow_single['audit2allow']
+      }
 
-    # Work around issue where .te file is corrupt on RHEL7 when "upgrading"
-    if $::selinux::params::rmmod {
-      $rmmod = "semodule -r local${title}; "
     } else {
-      $rmmod = ''
-    }
 
-    # Reload the changes automatically
-    exec { "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-      path      => $::path,
-      cwd       => "/etc/selinux/local/${title}",
-      subscribe => File["/etc/selinux/local/${title}/messages"],
-      # Don't run if .pp generation worked + module is loaded
-      unless    => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",
+      # explicit purge?
+
     }
 
   }

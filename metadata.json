@@ -30,5 +30,9 @@
   ],
   "description": "Easily manage SELinux audit2allow rules and persistent file contexts.",
   "dependencies": [
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.2.2"
+    }
   ]
 }
