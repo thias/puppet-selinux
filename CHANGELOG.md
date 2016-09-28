@@ -1,3 +1,6 @@
+* Support a single concat managed audit2allow SELinux module.
+* Support setting seltype copying its value (#7, @yakatz).
+
 #### 2015-05-20 - 1.0.4
 * Workaround in audit2allow package name/alias for Puppet 4 compatibility.
 
@@ -12,7 +15,7 @@
 * Fix audit2allow refresh by comparing .pp file and messages timestamps.
 
 #### 2014-09-09 - 1.0.0
-* Make sure audit2allow's exec is tried again if part of it fails.
+* Make sure audit2allow exec is tried again if part of it fails.
 * Work around audit2allow issue on RHEL7, previous module need to be unloaded.
 
 #### 2014-04-28 - 0.2.0
