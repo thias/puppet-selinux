@@ -7,11 +7,13 @@
 define selinux::dircontext (
   $seltype,
   $object = $title,
+  $copy   = false,
 ) {
 
   selinux::filecontext { $title:
     seltype => $seltype,
     recurse => true,
+    copy    => $copy,
   }
 
 }

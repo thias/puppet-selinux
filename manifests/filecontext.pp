@@ -6,7 +6,7 @@ define selinux::filecontext (
   $seltype,
   $object  = $title,
   $recurse = false,
-  $copy = false,
+  $copy    = false,
 ) {
 
   if $::selinux {
