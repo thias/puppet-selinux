@@ -27,7 +27,19 @@ class selinux (
       }
     }
     # The parent directory used from selinux::audit2allow
-    @file { '/etc/selinux/local': ensure => 'directory' }
+    @file { '/etc/selinux/local':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+    # RHEL 7.3 issue, file needs to exist for audit2allow to work
+    @file { '/etc/selinux/targeted/contexts/files/file_contexts.local':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
     # The single module when concat is used
     @selinux::audit2allow_single { 'audit2allow':
       ensure => 'present',
