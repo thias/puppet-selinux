@@ -48,11 +48,7 @@ define selinux::audit2allow_single (
         # The refresh requires this, but put it here since otherwise the
         # refresh can get skipped then never run again.
         require => Package['audit2allow'],
-      } ->
-      file { "/etc/selinux/local/${title}/messages":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
+        notify  => Exec["reload SELinux ${title} module"],
       }
     } else {
       file { "/etc/selinux/local/${title}/messages":
@@ -64,6 +60,7 @@ define selinux::audit2allow_single (
         # The refresh requires this, but put it here since otherwise the
         # refresh can get skipped then never run again.
         require => Package['audit2allow'],
+        notify  => Exec["reload SELinux ${title} module"],
       }
     }
 
@@ -75,12 +72,12 @@ define selinux::audit2allow_single (
     }
 
     # Reload the changes automatically
-    exec { "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp":
-      path      => $::path,
-      cwd       => "/etc/selinux/local/${title}",
-      subscribe => File["/etc/selinux/local/${title}/messages"],
+    exec { "reload SELinux ${title} module":
+      command => "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp",
+      path    => $::path,
+      cwd     => "/etc/selinux/local/${title}",
       # Don't run if .pp generation worked + module is loaded
-      unless    => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",
+      unless  => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",
     }
 
   }
