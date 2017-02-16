@@ -1,4 +1,5 @@
 * Require newer concat where file resource seems no longer included.
+* Fix limitation when a path contains another (foo.conf, foo.conf.puppet).
 
 #### 2016-11-10 - 1.0.5
 * Support a single concat managed audit2allow SELinux module.
