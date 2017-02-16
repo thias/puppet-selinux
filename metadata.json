@@ -25,14 +25,14 @@
     },
     {
     "name": "puppet",
-    "version_requirement": ">=2.7.20 <4.1.0"
+    "version_requirement": ">=2.7.20 <5.0.0"
     }
   ],
   "description": "Easily manage SELinux audit2allow rules and persistent file contexts.",
   "dependencies": [
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 1.2.2"
+      "version_requirement": ">= 2.0.0"
     }
   ]
 }

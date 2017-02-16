@@ -47,6 +47,11 @@ define selinux::audit2allow_single (
         # The refresh requires this, but put it here since otherwise the
         # refresh can get skipped then never run again.
         require => Package['audit2allow'],
+      } ->
+      file { "/etc/selinux/local/${title}/messages":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
       }
     } else {
       file { "/etc/selinux/local/${title}/messages":
