@@ -32,7 +32,6 @@ define selinux::audit2allow_single (
 
     # Parent directory and directory
     realize File['/etc/selinux/local']
-    realize File['/etc/selinux/targeted/contexts/files/file_contexts.local']
     file { "/etc/selinux/local/${title}":
       ensure => 'directory',
       owner  => 'root',

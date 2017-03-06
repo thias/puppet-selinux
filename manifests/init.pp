@@ -26,19 +26,21 @@ class selinux (
         hasstatus => true,
       }
     }
+    # Don't use a file resource since Puppet enforces system_u while an update
+    # of the selinux-policy sets it back to unconfined_u for some reason, and
+    # 'seluser => undef' doesn't seem to work on a file resource...
+    exec { 'touch /etc/selinux/targeted/contexts/files/file_contexts.local':
+      user    => 'root',
+      path    => $::path,
+      creates => '/etc/selinux/targeted/contexts/files/file_contexts.local',
+    }
     # The parent directory used from selinux::audit2allow
     @file { '/etc/selinux/local':
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-    }
-    # RHEL 7.3 issue, file needs to exist for audit2allow to work
-    @file { '/etc/selinux/targeted/contexts/files/file_contexts.local':
-      ensure => 'file',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      require => Exec['touch /etc/selinux/targeted/contexts/files/file_contexts.local'],
     }
     # The single module when concat is used
     @selinux::audit2allow_single { 'audit2allow':
