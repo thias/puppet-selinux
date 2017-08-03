@@ -9,6 +9,7 @@ allow otherwise denied system operations, and set file and directory security co
 * `selinux::audit2allow` : Definition for allowing based on avc denial messages.
 * `selinux::filecontext` : Manage SELinux file context.
 * `selinux::dircontext` : Manage SELinux file context recursively (directories).
+* `selinux::portcontext` : Manage SELinux port context.
 
 Note : For SELinux booleans, use the Puppet built-in `selboolean` type.
 
@@ -86,6 +87,18 @@ the source file or directory :
 selinux::dircontext { '/export/home':
   seltype => '/home',
   copy    => true,
+}
+```
+
+## selinux::portcontext
+
+Change SELinux port security context persistently using `semanage`.
+
+The `proto` must be `tcp` or `udp`. Example :
+```
+selinux::portcontext { '12345':
+  seltype => 'redis_port_t',
+  proto   => 'tcp',
 }
 ```
 

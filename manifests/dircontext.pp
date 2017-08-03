@@ -10,7 +10,7 @@ define selinux::dircontext (
   $copy   = false,
 ) {
 
-  selinux::filecontext { $title:
+  selinux::filecontext { $object:
     seltype => $seltype,
     recurse => true,
     copy    => $copy,
