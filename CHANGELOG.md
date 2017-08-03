@@ -1,6 +1,8 @@
+#### 2017-08-03 - 1.0.6
 * Require newer concat where file resource seems no longer included.
 * Fix limitation when a path contains another (foo.conf, foo.conf.puppet).
 * Work around missing file_contexts.local on RHEL 7.3.
+* Add portcontext definition.
 
 #### 2016-11-10 - 1.0.5
 * Support a single concat managed audit2allow SELinux module.
