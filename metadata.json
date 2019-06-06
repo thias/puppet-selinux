@@ -1,6 +1,6 @@
 {
   "name": "thias-selinux",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Matthias Saou",
   "license": "Apache-2.0",
   "summary": "SELinux module",
@@ -11,21 +11,17 @@
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
-    "operatingsystemrelease": [ "5", "6", "7" ]
+    "operatingsystemrelease": [ "5", "6", "7", "8" ]
     },
     {
     "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "5", "6", "7" ]
+    "operatingsystemrelease": [ "5", "6", "7", "8" ]
     }
   ],
   "requirements": [
     {
-    "name": "pe",
-    "version_requirement": "3.x"
-    },
-    {
     "name": "puppet",
-    "version_requirement": ">=2.7.20 <6.0.0"
+    "version_requirement": ">=2.7.20 <7.0.0"
     }
   ],
   "description": "Easily manage SELinux audit2allow rules and persistent file contexts.",

@@ -20,7 +20,12 @@ class selinux::params {
       $rmmod = false
     }
     'RedHat','CentOS','Scientific': {
-      if versioncmp($::operatingsystemrelease, '7') >= 0 {
+      if versioncmp($::operatingsystemrelease, '8') >= 0 {
+        $package_audit2allow = 'policycoreutils-python-utils'
+        $restorecond = true
+        $package_restorecond = 'policycoreutils-restorecond'
+        $rmmod = true
+      } elsif versioncmp($::operatingsystemrelease, '7') == 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'

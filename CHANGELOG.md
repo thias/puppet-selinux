@@ -1,3 +1,6 @@
+#### 2019-06-04 - 1.0.7
+* Support RHEL8.
+
 #### 2017-08-03 - 1.0.6
 * Require newer concat where file resource seems no longer included.
 * Fix limitation when a path contains another (foo.conf, foo.conf.puppet).
