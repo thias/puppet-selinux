@@ -1,3 +1,6 @@
+#### 2019-06-11 - 1.0.8
+* Fix restorecond on RHEL7, following RHEL8 support.
+
 #### 2019-06-04 - 1.0.7
 * Support RHEL8.
 

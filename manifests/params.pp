@@ -25,7 +25,7 @@ class selinux::params {
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
         $rmmod = true
-      } elsif versioncmp($::operatingsystemrelease, '7') == 0 {
+      } elsif versioncmp($::operatingsystemrelease, '7') >= 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
