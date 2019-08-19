@@ -14,7 +14,8 @@ define selinux::portcontext (
     exec { "semanage_port_${seltype}_${object}":
       command => "semanage port -a -t ${seltype} -p ${proto} ${object}",
       path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-      unless  => "semanage port -E | grep '^port -a -t ${seltype} -p ${proto} ${object}$'",
+      # RHEL 7.7+ added "-r 's0'" between -t and -p
+      unless  => "semanage port -E | grep '^port -a -t ${seltype} .*-p ${proto} ${object}$'",
       require => Package['audit2allow'],
     }
 

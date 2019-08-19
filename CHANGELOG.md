@@ -1,3 +1,6 @@
+#### 2019-08-19 - 1.0.9
+* Fix portcontext on RHEL7.7+ where semanage output changed.
+
 #### 2019-06-11 - 1.0.8
 * Fix restorecond on RHEL7, following RHEL8 support.
 
