@@ -7,6 +7,7 @@ define selinux::filecontext (
   $object  = $title,
   $recurse = false,
   $copy    = false,
+  $force   = false,
 ) {
 
   if $::selinux {
@@ -17,6 +18,10 @@ define selinux::filecontext (
     }
     $restore_options = $recurse ? {
       true  => '-R ',
+      false => '',
+    }
+    $force_option = $force ? {
+      true  => '-F ',
       false => '',
     }
     $onlyif_options = $recurse ? {
@@ -41,7 +46,7 @@ define selinux::filecontext (
 
     # Run restorecon to immediately set the SELinux Type.
     exec { "restorecon_${seltype}_${object}":
-      command     => "restorecon ${restore_options}${object}",
+      command     => "restorecon ${restore_options}${force_option}${object}",
       path        => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
       refreshonly => true,
       onlyif      => "test ${onlyif_options} ${object}",
