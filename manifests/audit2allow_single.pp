@@ -20,10 +20,10 @@ define selinux::audit2allow_single (
     exec { "semodule -r local${title}":
       path   => $::path,
       onlyif => "semodule -l | egrep ^local${title}\s",
-    } -> 
+    }
 
     # Remove our files and the ones audit2allow creates
-    file { "/etc/selinux/local/${title}":
+    -> file { "/etc/selinux/local/${title}":
       ensure => 'absent',
       force  => true,
     }

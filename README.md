@@ -94,13 +94,11 @@ selinux::dircontext { '/export/home':
 
 Change SELinux port security context persistently using `semanage`.
 
-The `ensure` is not mandatory and default is `present`.
 The `proto` must be `tcp` or `udp`. Example :
 ```
 selinux::portcontext { '12345':
   seltype => 'redis_port_t',
   proto   => 'tcp',
-  ensure  => 'present',
 }
 ```
 
