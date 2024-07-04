@@ -8,12 +8,14 @@ define selinux::dircontext (
   $seltype,
   $object = $title,
   $copy   = false,
+  $force  = false,
 ) {
 
   selinux::filecontext { $object:
     seltype => $seltype,
     recurse => true,
     copy    => $copy,
+    force   => $force,
   }
 
 }
