@@ -1,3 +1,5 @@
+* Fix changing seltype on existing filecontext (#11).
+
 #### 2019-08-19 - 1.0.9
 * Fix portcontext on RHEL7.7+ where semanage output changed.
 
