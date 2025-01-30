@@ -8,7 +8,7 @@ class selinux (
   $concat              = false,
 ) inherits ::selinux::params {
 
-  if $::selinux {
+  if ('selinux' in $facts['os']) {
     package { 'audit2allow':
       ensure => 'installed',
       name   => $package_audit2allow,
@@ -31,7 +31,7 @@ class selinux (
     # 'seluser => undef' doesn't seem to work on a file resource...
     exec { 'touch /etc/selinux/targeted/contexts/files/file_contexts.local':
       user    => 'root',
-      path    => $::path,
+      path    => $facts['path'],
       creates => '/etc/selinux/targeted/contexts/files/file_contexts.local',
     }
     # The parent directory used from selinux::audit2allow

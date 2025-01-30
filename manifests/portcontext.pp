@@ -9,7 +9,7 @@ define selinux::portcontext (
   $object = $title,
 ) {
 
-  if $::selinux {
+  if ('selinux' in $facts['os']) {
 
     Exec {
       path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],

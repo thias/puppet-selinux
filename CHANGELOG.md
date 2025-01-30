@@ -1,3 +1,5 @@
+* Remove legacy facts usage.
+
 #### 2024-07-04 - 1.0.10
 * Fix changing seltype on existing filecontext (#11).
 * Add force parameter to filecontext (#15, @jmurph-ws).

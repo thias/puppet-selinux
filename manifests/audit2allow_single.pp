@@ -18,7 +18,7 @@ define selinux::audit2allow_single (
 
     # Unload module if found
     exec { "semodule -r local${title}":
-      path   => $::path,
+      path   => $facts['path'],
       onlyif => "semodule -l | egrep ^local${title}\s",
     }
 
@@ -73,7 +73,7 @@ define selinux::audit2allow_single (
     # Reload the changes automatically
     exec { "reload SELinux ${title} module":
       command => "${rmmod}rm -f local${title}.*; audit2allow -M local${title} -i messages && semodule -i local${title}.pp",
-      path    => $::path,
+      path    => $facts['path'],
       cwd     => "/etc/selinux/local/${title}",
       # Don't run if .pp generation worked + module is loaded
       unless  => "test local${title}.pp -nt messages && ( semodule -l | egrep ^local${title}\s )",

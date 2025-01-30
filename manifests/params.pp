@@ -4,15 +4,15 @@ class selinux::params {
 
   # Some tools were split out in sub-packages over time
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     'Fedora': {
       $restorecond = true
-      if $::operatingsystemrelease >= 11 {
+      if $facts['os']['release']['major'] >= 11 {
         $package_audit2allow = 'policycoreutils-python'
       } else {
         $package_audit2allow = 'policycoreutils'
       }
-      if $::operatingsystemrelease >= 17 {
+      if $facts['os']['release']['major'] >= 17 {
         $package_restorecond = 'policycoreutils-restorecond'
       } else {
         $package_restorecond = false
@@ -20,17 +20,17 @@ class selinux::params {
       $rmmod = false
     }
     'RedHat','CentOS','Scientific': {
-      if versioncmp($::operatingsystemrelease, '8') >= 0 {
+      if versioncmp($facts['os']['release']['major'], '8') >= 0 {
         $package_audit2allow = 'policycoreutils-python-utils'
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
         $rmmod = true
-      } elsif versioncmp($::operatingsystemrelease, '7') >= 0 {
+      } elsif versioncmp($facts['os']['release']['major'], '7') >= 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = 'policycoreutils-restorecond'
         $rmmod = true
-      } elsif versioncmp($::operatingsystemrelease, '5') >= 0 {
+      } elsif versioncmp($facts['os']['release']['major'], '5') >= 0 {
         $package_audit2allow = 'policycoreutils-python'
         $restorecond = true
         $package_restorecond = false
