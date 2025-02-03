@@ -10,7 +10,7 @@ define selinux::filecontext (
   $force   = false,
 ) {
 
-  if ('selinux' in $facts['os']) {
+  if $facts.get('os.selinux.enabled') {
 
     $target = $recurse ? {
       true  => "${object}(/.*)?",

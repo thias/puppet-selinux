@@ -8,7 +8,7 @@ class selinux (
   $concat              = false,
 ) inherits ::selinux::params {
 
-  if ('selinux' in $facts['os']) {
+  if $facts.get('os.selinux.enabled') {
     package { 'audit2allow':
       ensure => 'installed',
       name   => $package_audit2allow,
